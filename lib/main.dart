@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jsondemo/api_screen.dart';
 import 'package:jsondemo/fav_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +27,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => MyHomePage(title: "Home"),
+        "ApiScreen": (context) => ApiScreen()
+      },
     );
   }
 }
@@ -111,6 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // setState(() {});
           // print("decodedJson ${decodedJson[0]["email"]}");
           // jsonEncode();
+
+          Navigator.pushNamed(context, "ApiScreen");
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
