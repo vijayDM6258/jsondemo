@@ -16,13 +16,39 @@ class ApiHelper {
   }
 
   Future<List<dynamic>> getPhotos() async {
-    http.Response res = await http.get(Uri.parse("https://pixabay.com/api/?key=47290946-f24a532c9cde2b26ed1a38eef"));
+    http.Response res = await http.get(Uri.parse("https://pixabay.com/api/?key=47290946-f24a532c9cde2b26ed1a38eef&orientation=vertical"));
     interceptor(res);
     Map<String, dynamic> map = jsonDecode(res.body);
 
     List list = map['hits'];
 
     return list;
+  }
+
+  Future<List<dynamic>> getRestUsers() async {
+    http.Response res = await http.get(Uri.parse("https://api-generator.retool.com/oOhR1I/data"));
+
+    return jsonDecode(res.body);
+    interceptor(res);
+  }
+
+  Future addUser(String name, String email) async {
+    Map<String, dynamic> reqPram = {
+      "name": name,
+      "email": email,
+    };
+
+    http.Response res = await http.post(
+      Uri.parse("https://api-generator.retool.com/oOhR1I/data"),
+      body: jsonEncode(reqPram),
+      headers: {"Content-Type": "application/json"},
+    );
+    interceptor(res);
+  }
+
+  Future<bool> deleteUser(num id) async {
+    http.Response res = await http.delete(Uri.parse("https://api-generator.retool.com/oOhR1I/data/$id"));
+    return res.statusCode == 200;
   }
 
   void interceptor(http.Response response) {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jsondemo/api_screen.dart';
 import 'package:jsondemo/fav_page.dart';
+import 'package:jsondemo/post_api_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late SharedPreferences prefs;
@@ -29,10 +30,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       initialRoute: "/",
-      routes: {
-        "/": (context) => MyHomePage(title: "Home"),
-        "ApiScreen": (context) => ApiScreen()
-      },
+      routes: {"/": (context) => MyHomePage(title: "Home"), "ApiScreen": (context) => ApiScreen()},
     );
   }
 }
@@ -77,6 +75,15 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return PostApiScreen();
+                  },
+                ));
+              },
+              icon: Text("POST")),
           IconButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(

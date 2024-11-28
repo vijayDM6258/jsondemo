@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -71,9 +72,19 @@ class _ApiScreenState extends State<ApiScreen> {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 1, mainAxisSpacing: 1),
                         itemBuilder: (context, index) {
                           Map<String, dynamic> photo = photos[index];
-                          return Image.network(
-                            photo['previewURL'],
-                            fit: BoxFit.cover,
+                          return InkWell(
+                            onTap: () async {
+                              bool isSet = await AsyncWallpaper.setWallpaper(
+                                url: photo['previewURL'],
+                                goToHome: true,
+                                wallpaperLocation: AsyncWallpaper.LOCK_SCREEN,
+                              );
+                              print("isset $isSet");
+                            },
+                            child: Image.network(
+                              photo['previewURL'],
+                              // fit: BoxFit.cover,
+                            ),
                           );
                         },
                       );
