@@ -51,6 +51,16 @@ class ApiHelper {
     return res.statusCode == 200;
   }
 
+  Future<List<dynamic>> getCategoryPhotos(String category) async {
+    http.Response res = await http.get(Uri.parse("https://pixabay.com/api/?key=47290946-f24a532c9cde2b26ed1a38eef&category=$category"));
+    interceptor(res);
+    Map<String, dynamic> map = jsonDecode(res.body);
+
+    List list = map['hits'];
+
+    return list;
+  }
+
   void interceptor(http.Response response) {
     print("user===> ${response.statusCode}");
     print("user===> ${response.body}");

@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:jsondemo/api_screen.dart';
 import 'package:jsondemo/fav_page.dart';
 import 'package:jsondemo/post_api_screen.dart';
+import 'package:jsondemo/providers/category_provider.dart';
+import 'package:jsondemo/screens/category_photo_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late SharedPreferences prefs;
@@ -22,30 +25,31 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      initialRoute: "/",
-      routes: {"/": (context) => MyHomePage(title: "Home"), "ApiScreen": (context) => ApiScreen()},
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => CategoryProvider(),
+          )
+        ],
+        builder: (context, child) => MaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                useMaterial3: true,
+              ),
+              // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+              initialRoute: "/",
+              routes: {
+                "/": (context) => MyHomePage(title: "Home"),
+                "ApiScreen": (context) => ApiScreen(),
+                "categoryPhotoScreen": (context) => CategoryPhotoScreen(),
+              },
+            ));
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -92,7 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ));
               },
-              icon: Icon(Icons.star))
+              icon: Icon(Icons.star)),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "categoryPhotoScreen");
+              },
+              icon: Icon(Icons.menu))
         ],
       ),
       body: decodedJson.isEmpty
